@@ -20,40 +20,45 @@ import java.util.Map;
 // 接口
 interface UserMapper {
   // 查询所有User对象
-  @Select("SELECT * FROM blog WHERE id = #{id} ")
-  List<User> selectUserList(int id, String name);
+  @Select("SELECT * FROM blog WHERE id = #{id} and #{name}")
+  List<User> selectUserList(Integer id, String name);
 }
 
 public class Application1 {
   public static void main(String[] args) {
 
-    UserMapper userMapper = (UserMapper) Proxy.newProxyInstance(Application1.class.getClassLoader(), new Class[]{UserMapper.class}, new InvocationHandler() {
+    UserMapper userMapper = (UserMapper) Proxy.newProxyInstance(Application1.class.getClassLoader(), new Class<?>[]{UserMapper.class}, new InvocationHandler() {
 
       @Override
       public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
         Select annotation = method.getAnnotation(Select.class);
-        Map<String, Object> nameArgMap = buildMethodArgNameMap(method, args);
-
-        System.out.println(Arrays.toString(args));
 
         if (annotation != null) {
+
+          Map<String, Object> nameArgMap = buildMethodArgNameMap(method, args);
+
+          System.out.println(method.getName());
+
           String[] value = annotation.value();
           String sql = value[0];
-          parseSql(sql, nameArgMap);
-          System.out.println(sql);
-          // 获取方法的返回值泛型
-          System.out.println(method.getReturnType());
-          // 获取方法的返回值对象类型
-          System.out.println(method.getGenericParameterTypes());
+          String s = parseSql(sql, nameArgMap);
+
+          System.out.println(s);
+
+//          // 获取方法的返回值泛型
+//          System.out.println(method.getReturnType());
+//          // 获取方法的返回值对象类型
+//          System.out.println(method.getGenericParameterTypes());
         }
-        System.out.println(method.getName());
+//        System.out.println(method.getName());
         return null;
       }
+
+
     });
     userMapper.selectUserList(1, "zhangSan");
   }
-
 
   /**
    * 解析sql
@@ -109,6 +114,7 @@ public class Application1 {
     int index[] = {0};
     Arrays.asList(parameters).stream().forEach(parameter -> {
       String name = parameter.getName();
+      System.out.println(name);
       nameArgMap.put(name, args[index[0]]);
       index[0]++;
     });

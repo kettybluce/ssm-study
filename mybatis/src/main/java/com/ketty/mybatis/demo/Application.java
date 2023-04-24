@@ -33,7 +33,7 @@ public class Application {
       // 反射加载驱动
       Class.forName("com.mysql.cj.jdbc.Driver");
       // 获取连接 静态代码块中将所有的资源进行加载
-      connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
+      connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=false", "root", "root");
       // 代表一次SQL的操作
       statement = connection.createStatement();
 
