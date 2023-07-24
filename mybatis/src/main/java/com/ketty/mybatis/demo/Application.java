@@ -76,7 +76,6 @@ public class Application {
           throw new RuntimeException(e);
         }
       }
-
     }
   }
 }

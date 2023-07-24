@@ -17,6 +17,5 @@ public class Test {
     Class<? extends User> aClass1 = new User().getClass();
 //  创建对象
     User user = userClass.newInstance();
-
   }
 }
