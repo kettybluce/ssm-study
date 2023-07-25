@@ -11,10 +11,7 @@ import java.lang.reflect.Method;
 public class ProxyDemo {
 
     public static void main(String[] args) {
-
-
     }
-
     public Test createProxyInstance(final InvokeHandler handler, final Class<?> clazz) {
         return new Test() {
             @Override
@@ -29,15 +26,9 @@ public class ProxyDemo {
         };
     }
 }
-
-
 interface Test {
-    /**
-     * 测试方法
-     */
     public void say();
 }
-
 interface InvokeHandler {
     Object invoke(Object obj, Method method, Object... args);
 }
