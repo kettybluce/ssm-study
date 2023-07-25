@@ -105,7 +105,7 @@ public class Application1 {
         return nextIndex;
       }
     }
-    throw new RuntimeException(String.format("缺少右括号\nindex：%d", nextIndex));
+    throw new RuntimeException(String.format("缺少右括号\n index：%d", nextIndex));
   }
 
   public static Map<String, Object> buildMethodArgNameMap(Method method, Object[] args) {

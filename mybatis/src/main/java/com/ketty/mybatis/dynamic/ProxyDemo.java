@@ -14,6 +14,20 @@ public class ProxyDemo {
 
 
     }
+
+    public Test createProxyInstance(final InvokeHandler handler, final Class<?> clazz) {
+        return new Test() {
+            @Override
+            public void say() {
+                try {
+                    final Method sayMethod = clazz.getMethod("say");
+                    handler.invoke(this, sayMethod);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
 }
 
 
