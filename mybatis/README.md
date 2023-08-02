@@ -136,9 +136,85 @@ executor = (Executor) interceptorChain.pluginAll(executor); // 责任链模式
 
 责任链模式
 
-```
+```JAVA
+package com.ketty.mybatis.chainOfResponsibility;
+
+import com.google.common.collect.Lists;
+import java.util.Iterator;
+import java.util.List;
+/**
+ * @Author ketty bluce
+ * @Create 2023/7/25
+ * @Version 1.0
+ */
+interface Interceptor {
+    Object plugin(Object target, InterceptorChain chain);
+}
+class InterceptorA implements Interceptor {
+    @Override
+    public Object plugin(Object target, InterceptorChain chain) {
+        System.out.println("InterceptorA");
+        return chain.plugin(target);
+    }
+}
+class InterceptorB implements Interceptor {
+    @Override
+    public Object plugin(Object target, InterceptorChain chain) {
+        System.out.println("InterceptorB");
+        return chain.plugin(target);
+    }
+}
+class InterceptorC implements Interceptor {
+    @Override
+    public Object plugin(Object target, InterceptorChain chain) {
+        System.out.println("InterceptorC");
+        return target;
+    }
+}
+class InterceptorChain {
+    private List<Interceptor> interceptorList = Lists.newArrayList();
+    private Iterator<Interceptor> iterator;
+    public void addInterceptor(Interceptor interceptor) {
+        interceptorList.add(interceptor);
+    }
+    public Object pluginAll(Object target) {
+        for (Interceptor interceptor : interceptorList) {
+            target = interceptor.plugin(target, this);
+        }
+        return target;
+    }
+    public Object plugin(Object target) {
+        if (iterator == null) {
+            iterator = interceptorList.iterator();
+        }
+        if (iterator.hasNext()) {
+            Interceptor next = iterator.next();
+            next.plugin(target, this);
+        }
+        return target;
+    }
+}
+public class InterceptorDemo {
+    public static void main(String[] args) {
+        InterceptorA interceptorA = new InterceptorA();
+        InterceptorB interceptorB = new InterceptorB();
+        InterceptorC interceptorC = new InterceptorC();
+        InterceptorChain interceptorChain = new InterceptorChain();
+        interceptorChain.addInterceptor(interceptorA);
+        interceptorChain.addInterceptor(interceptorB);
+        interceptorChain.addInterceptor(interceptorC);
+
+        interceptorChain.plugin(new Object());
+    }
+}
 
 ```
+
+
+
+任何成熟的框架都需要提供一个可扩展的接口，动态增强
+
+创建出一个sqlSession会话
 
 
 
